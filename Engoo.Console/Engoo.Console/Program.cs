@@ -13,20 +13,30 @@ namespace Engoo.Console
 	{
 		static void Main(string[] args)
 		{
-			EngooScaner scaner = new EngooScaner();
+			int teacherId = 7181;
 
-			var schedules =  scaner.GetSchedules(123);
+			var newCount = ScanTeachersLessons(teacherId);
+
+			if (newCount > 0)
+			{
+				EmailHelper.SendNotice($"https://engoo.com/teachers/{teacherId}");
+			}
+
+			System.Console.WriteLine("Scanned lessons: " + newCount);
+		}
+
+
+		private static int ScanTeachersLessons(int teacherId)
+		{
+			var schedules = new EngooScaner().GetSchedules(teacherId);
+
 			using (var repo = new LessonRepository())
 			{
 				var list = schedules.Select(x => repo.AddOrUpdate(x)).ToList();
 				int newCount = list.Count(x => repo.Context.Entry(x).State == System.Data.Entity.EntityState.Added);
-
-				if (newCount > 0)
-				{
-					EmailHelper.SendNotice("https://engoo.com/teachers/14557");
-				}
-
 				repo.SaveChanges();
+
+				return newCount;
 			}
 		}
 	}

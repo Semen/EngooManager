@@ -15,11 +15,11 @@ namespace Engoo.Core
 	{
 		public List<Lesson> GetSchedules(int teachedId)
 		{
-			const string Url = "https://engoo.com/teachers/14557.json";
+			const string Url = "https://engoo.com/teachers/{0}.json";
 
 			using (WebClient wc = new WebClient())
 			{
-				var json = wc.DownloadString(Url);
+				var json = wc.DownloadString(string.Format(Url, teachedId));
 
 				dynamic obj = JObject.Parse(json);
 
