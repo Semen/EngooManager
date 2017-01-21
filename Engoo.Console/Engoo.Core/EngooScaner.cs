@@ -29,7 +29,8 @@ namespace Engoo.Core
 					LessonDate = DateTime.ParseExact(x.lesson_date.ToString() + "T" + x.scheduled_start_time.ToString(), "s", CultureInfo.InvariantCulture),
 					Status = x.status,
 					LockedLesson = x.locked_lesson,
-					TimePassed = x.time_passed
+					TimePassed = x.time_passed,
+					TeacherId = teachedId
 					
 				}).ToList();
 

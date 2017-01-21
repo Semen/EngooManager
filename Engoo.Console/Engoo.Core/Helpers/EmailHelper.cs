@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engoo.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,7 +11,7 @@ namespace Engoo.Core.Helpers
 {
 	public static class EmailHelper
 	{
-		public static void SendNotice(string teacherUrl)
+		public static void SendNotice(List<Teacher> teachers)
 		{
 			var fromAddress = new MailAddress("s.i.gordeyev@gmail.com", "Engoo");
 			var toAddress = new MailAddress("senyagordeev@gmail.com", "Me");
@@ -24,13 +25,15 @@ namespace Engoo.Core.Helpers
 				UseDefaultCredentials = false,
 				Credentials = new NetworkCredential(fromAddress.Address, "!!2qfflvbyrj0011")
 			};
-				
+
 			using (var message = new MailMessage(fromAddress, toAddress)
 			{
 				Subject = "New lessons available",
-				Body = @"New lessons available from teacher " + teacherUrl
+				IsBodyHtml = true
 			})
 			{
+				message.Body = "New lessons available from teacher " + string.Join("; ", teachers.Select(x => $"<a href='https://engoo.com/teachers/{x.TeacherId}'>{ x.Name}</a> "));
+				
 				smtp.Send(message);
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿using Engoo.Core;
 using Engoo.Core.DAO;
 using Engoo.Core.Helpers;
+using Engoo.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,27 @@ namespace Engoo.Console
 	{
 		static void Main(string[] args)
 		{
-			int teacherId = 7181;
-
-			var newCount = ScanTeachersLessons(teacherId);
-
-			if (newCount > 0)
+			var teachers = new List<Teacher>
 			{
-				EmailHelper.SendNotice($"https://engoo.com/teachers/{teacherId}");
+				new Teacher { TeacherId = 7181, Name = "Mizza" },
+				new Teacher { TeacherId = 14557, Name = "ULE" }
+			};
+
+			var freeTeachers = new List<Teacher>();
+
+			foreach (var teacher in teachers)
+			{
+				var newCount = ScanTeachersLessons(teacher.TeacherId);
+
+				if (newCount > 0)
+				{
+					freeTeachers.Add(teacher);
+				}
+
+				System.Console.WriteLine($"Teacher: {teacher.Name}; Scanned lessons: {newCount}; Date: {DateTime.Now.ToString("s")}");
 			}
 
-			System.Console.WriteLine("Scanned lessons: " + newCount);
+			EmailHelper.SendNotice(freeTeachers);
 		}
 
 

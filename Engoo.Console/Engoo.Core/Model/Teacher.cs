@@ -8,20 +8,12 @@ using System.Threading.Tasks;
 
 namespace Engoo.Core.Model
 {
-	public class Lesson
+	public class Teacher
 	{
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
-		public int LessonId { get; set; }
-
-		public DateTime LessonDate { get; set; }
-
-		public int Status { get; set; }
-
-		public bool TimePassed { get; set; }
-
-		public bool LockedLesson { get; set; }
-
 		public int TeacherId { get; set; }
+
+		public string Name { get; set; }
 	}
 }
